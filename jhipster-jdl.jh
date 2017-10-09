@@ -1,0 +1,43 @@
+entity Dominio {
+	nome String
+}
+
+entity  Tema{
+	nome String
+}
+entity  SubTema{
+	nome String
+}
+entity  Indicatore{
+	nome String,
+    descrizione String,
+	unitaMisura String,
+	rilevanza Rilevanza,
+	corset String,    
+	rifBibliografici String,
+	fonte String,
+    note String
+}
+enum Rilevanza {
+    ALTA, MEDIA, BASSA
+}
+
+relationship OneToMany {
+	Dominio{dominio} to Tema,
+	/**
+	* A relationship
+	*/
+	Tema{tema} to SubTema,
+    SubTema{subtema} to Indicatore
+	
+}
+// Set pagination options
+paginate Dominio, Tema, SubTema with infinite-scroll
+paginate Indicatore with pagination
+
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl except Dominio, Tema, SubTema, Indicatore
+// Set an angular suffix
+angularSuffix * with smart
